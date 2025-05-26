@@ -12,8 +12,8 @@ Projekt tłumaczący teksty z języka polskiego na angielski, wykorzystujący mo
 ## Uruchamianie lokalne
 ```bash
 pip install -r requirements.txt
-uvicorn api:app --reload
-streamlit run frontend.py
+uvicorn api.api:app --reload
+streamlit run frontend/frontend.py
 ````
 
 ## Testowanie modeli (ewaluacja)

@@ -1,6 +1,9 @@
 import streamlit as st
 import requests
 import time
+import os
+
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 st.set_page_config(page_title="Translator GUI", page_icon="🌍", layout="wide")
 
@@ -33,11 +36,11 @@ if st.button("Przetłumacz"):
             try:
                 if model_label == "Oba modele":
                     start = time.perf_counter()
-                    response_opus = requests.post("http://localhost:8000/translate", json={"text": text, "model": "opus"})
+                    response_opus = requests.post(f"{API_URL}/translate", json={"text": text, "model": "opus"})
                     time_opus = time.perf_counter() - start
 
                     start = time.perf_counter()
-                    response_mbart = requests.post("http://localhost:8000/translate", json={"text": text, "model": "mbart"})
+                    response_mbart = requests.post(f"{API_URL}/translate", json={"text": text, "model": "mbart"})
                     time_mbart = time.perf_counter() - start
 
                     if response_opus.status_code == 200 and response_mbart.status_code == 200:
@@ -48,7 +51,7 @@ if st.button("Przetłumacz"):
                 else:
                     api_model = model_map.get(model_label)
                     start = time.perf_counter()
-                    response = requests.post("http://localhost:8000/translate", json={"text": text, "model": api_model})
+                    response = requests.post(f"{API_URL}/translate", json={"text": text, "model": api_model})
                     elapsed = time.perf_counter() - start
 
                     if response.status_code == 200:
@@ -70,10 +73,9 @@ if error_msg:
 
 def display_result(title, text, elapsed_time):
     st.subheader(title)
-    st.code(text, language=None)  # lepsze do kopiowania niż text_area z disabled
+    st.code(text, language=None)
     if elapsed_time is not None:
         st.caption(f"Czas tłumaczenia: {elapsed_time:.2f} sek")
-
 
 if model_label == "Oba modele" and translated_opus and translated_mbart:
     col1, col2 = st.columns(2)
