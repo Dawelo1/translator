@@ -36,8 +36,8 @@ def translate_mbart(text, mbart_tokenizer, mbart_model):
     )
     return mbart_tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
-def evaluate_models_on_dataset(dataset, opus_model, mbart_tokenizer, mbart_model):
-    bleu_metric = evaluate.load("sacrebleu")  # tutaj używamy evaluate
+def evaluate_models_on_dataset(dataset, opus_model, mbart_tokenizer, mbart_model, return_predictions=False):
+    bleu_metric = evaluate.load("sacrebleu")
 
     opus_preds = []
     mbart_preds = []
@@ -49,7 +49,7 @@ def evaluate_models_on_dataset(dataset, opus_model, mbart_tokenizer, mbart_model
 
         opus_trans = translate_opus(pl_text, opus_model).lower()
         mbart_trans = translate_mbart(pl_text, mbart_tokenizer, mbart_model).lower()
-        # sacrebleu przyjmuje teksty, więc nie dzielimy na tokeny, tylko trzymamy stringi
+
         opus_preds.append(opus_trans)
         mbart_preds.append(mbart_trans)
         references.append([en_ref.lower()])
@@ -57,4 +57,8 @@ def evaluate_models_on_dataset(dataset, opus_model, mbart_tokenizer, mbart_model
     opus_score = bleu_metric.compute(predictions=opus_preds, references=references)
     mbart_score = bleu_metric.compute(predictions=mbart_preds, references=references)
 
-    return opus_score['score'], mbart_score['score']
+    if return_predictions:
+        return opus_score["score"], mbart_score["score"], opus_preds, mbart_preds
+    else:
+        return opus_score["score"], mbart_score["score"]
+

@@ -1,0 +1,38 @@
+[
+  {
+    "source_pl": "Cześć.",
+    "reference_en": "Hi.",
+    "opus_mt": "hi.",
+    "mbart": "hi."
+  },
+  {
+    "source_pl": "Hej, co u ciebie słychać?",
+    "reference_en": "Hey, how are you doing?",
+    "opus_mt": "hey, how are you?",
+    "mbart": "hey, what do you hear?"
+  },
+  {
+    "source_pl": "Czujesz się dobrze?",
+    "reference_en": "Are you feeling well?",
+    "opus_mt": "are you okay?",
+    "mbart": "are you feeling well?"
+  },
+  {
+    "source_pl": "Nic się nie dzieje w twoim życiu?",
+    "reference_en": "Is nothing happening in your life?",
+    "opus_mt": "there's nothing going on in your life?",
+    "mbart": "is nothing happening in your life?"
+  },
+  {
+    "source_pl": "Dzień dobry.",
+    "reference_en": "Good morning.",
+    "opus_mt": "good morning.",
+    "mbart": "good day."
+  },
+  {
+    "source_pl": "To jest pies.",
+    "reference_en": "This is a dog.",
+    "opus_mt": "it's a dog.",
+    "mbart": "it is a dog."
+  }
+]
