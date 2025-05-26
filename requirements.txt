@@ -7,3 +7,7 @@ protobuf
 streamlit
 sacremoses
 nltk
+datasets
+sacrebleu
+requests
+evaluate

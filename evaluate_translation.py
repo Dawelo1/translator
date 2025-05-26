@@ -13,7 +13,7 @@ def save_report(opus_bleu, mbart_bleu):
 
 def main():
     print("Ładowanie danych testowych WMT14...")
-    dataset = load_dataset("wmt14", "pl-en", split="test[:100]")
+    dataset = load_dataset("opus_books", "en-pl", split="test[:100]")
 
     print("Inicjalizacja modeli...")
     opus_model, mbart_tokenizer, mbart_model = init_models()

@@ -2,7 +2,7 @@ import torch
 from transformers import pipeline, MBartForConditionalGeneration, MBart50TokenizerFast
 from nltk.tokenize import sent_tokenize
 import nltk
-from datasets import load_metric
+import evaluate  # <-- zamiast datasets.load_metric
 
 nltk.download('punkt')
 
@@ -37,7 +37,7 @@ def translate_mbart(text, mbart_tokenizer, mbart_model):
     return mbart_tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
 def evaluate_models_on_dataset(dataset, opus_model, mbart_tokenizer, mbart_model):
-    bleu_metric = load_metric("sacrebleu")
+    bleu_metric = evaluate.load("sacrebleu")  # tutaj używamy evaluate
 
     opus_preds = []
     mbart_preds = []
@@ -47,13 +47,12 @@ def evaluate_models_on_dataset(dataset, opus_model, mbart_tokenizer, mbart_model
         pl_text = example["translation"]["pl"]
         en_ref = example["translation"]["en"]
 
-        opus_trans = translate_opus(pl_text, opus_model).lower().split()
-        mbart_trans = translate_mbart(pl_text, mbart_tokenizer, mbart_model).lower().split()
-        ref_tokens = en_ref.lower().split()
-
+        opus_trans = translate_opus(pl_text, opus_model).lower()
+        mbart_trans = translate_mbart(pl_text, mbart_tokenizer, mbart_model).lower()
+        # sacrebleu przyjmuje teksty, więc nie dzielimy na tokeny, tylko trzymamy stringi
         opus_preds.append(opus_trans)
         mbart_preds.append(mbart_trans)
-        references.append([ref_tokens])
+        references.append([en_ref.lower()])
 
     opus_score = bleu_metric.compute(predictions=opus_preds, references=references)
     mbart_score = bleu_metric.compute(predictions=mbart_preds, references=references)
