@@ -6,3 +6,4 @@ sentencepiece
 protobuf
 streamlit
 sacremoses
+nltk

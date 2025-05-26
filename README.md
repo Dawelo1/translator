@@ -12,3 +12,5 @@ Projekt tłumaczący teksty z języka polskiego na angielski, wykorzystujący mo
 pip install -r requirements.txt
 uvicorn api:app --reload
 streamlit run frontend.py
+
+opus-Mt nie radzi sobie z wieloma zdaniami dlatego zaimplementowane jest w kodzie dzielenie tekstu na pojedyncze zdania i tłumaczenia ich pojedynczo. moze przez to gubic kontekst.

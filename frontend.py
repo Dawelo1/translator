@@ -2,15 +2,15 @@ import streamlit as st
 import requests
 import time
 
-st.set_page_config(page_title="Translator GUI", page_icon="🌍")
+st.set_page_config(page_title="Translator GUI", page_icon="🌍", layout="wide")
 
 st.title("🌍 Translator GUI")
 st.markdown("Wprowadź tekst i wybierz model do tłumaczenia.")
 
-# Formularz użytkownika
-text = st.text_area("Tekst do przetłumaczenia", height=150)
+# Formularz użytkownika z wyższym polem tekstowym
+text = st.text_area("Tekst do przetłumaczenia", height=300)
 
-# Użycie radio do wyboru modelu, dodajemy opcję "Oba modele"
+# Wybór modelu (dodana opcja obu modeli)
 model_label = st.radio("Wybierz model tłumaczenia", ["Opus-MT", "mBART-50", "Oba modele"])
 
 # Mapa nazw GUI -> API
@@ -32,8 +32,6 @@ if st.button("Przetłumacz"):
         with st.spinner("Tłumaczenie..."):
             try:
                 if model_label == "Oba modele":
-                    # Wywołujemy API dwa razy, raz dla każdego modelu
-
                     start = time.perf_counter()
                     response_opus = requests.post("http://localhost:8000/translate", json={"text": text, "model": "opus"})
                     time_opus = time.perf_counter() - start
@@ -49,7 +47,6 @@ if st.button("Przetłumacz"):
                         error_msg = "Błąd podczas tłumaczenia jednym lub dwoma modelami."
                 else:
                     api_model = model_map.get(model_label)
-
                     start = time.perf_counter()
                     response = requests.post("http://localhost:8000/translate", json={"text": text, "model": api_model})
                     elapsed = time.perf_counter() - start
@@ -71,31 +68,21 @@ if st.button("Przetłumacz"):
 if error_msg:
     st.error(error_msg)
 
-# Wyświetlanie wyników
+def display_result(title, text, elapsed_time):
+    st.subheader(title)
+    st.code(text, language=None)  # lepsze do kopiowania niż text_area z disabled
+    if elapsed_time is not None:
+        st.caption(f"Czas tłumaczenia: {elapsed_time:.2f} sek")
+
+
 if model_label == "Oba modele" and translated_opus and translated_mbart:
     col1, col2 = st.columns(2)
-
     with col1:
-        st.subheader("Opus-MT")
-        st.code(translated_opus, language="text")
-        if time_opus is not None:
-            st.caption(f"Czas tłumaczenia: {time_opus:.2f} sek")
-
+        display_result("Opus-MT", translated_opus, time_opus)
     with col2:
-        st.subheader("mBART-50")
-        st.code(translated_mbart, language="text")
-        if time_mbart is not None:
-            st.caption(f"Czas tłumaczenia: {time_mbart:.2f} sek")
-
+        display_result("mBART-50", translated_mbart, time_mbart)
 else:
-    # Pokazujemy pojedynczy wynik (jeśli jest)
     if translated_opus:
-        st.subheader("Opus-MT")
-        st.code(translated_opus, language="text")
-        if time_opus is not None:
-            st.caption(f"Czas tłumaczenia: {time_opus:.2f} sek")
+        display_result("Opus-MT", translated_opus, time_opus)
     if translated_mbart:
-        st.subheader("mBART-50")
-        st.code(translated_mbart, language="text")
-        if time_mbart is not None:
-            st.caption(f"Czas tłumaczenia: {time_mbart:.2f} sek")
+        display_result("mBART-50", translated_mbart, time_mbart)

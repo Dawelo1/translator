@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline, MBartForConditionalGeneration, MBart50TokenizerFast
+import nltk
+from nltk.tokenize import sent_tokenize
 
 app = FastAPI()
+
+nltk.download('punkt')      # To jest standardowe, ale dla polskiego potrzebny jest 'punkt_tab'
+nltk.download('punkt_tab')  # To konkretne dla tokenizacji zdań w polskim
 
 # Definicja modelu requestu
 class TranslateRequest(BaseModel):
@@ -25,13 +30,21 @@ def translate_mbart(text: str) -> str:
     )
     return mbart_tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
+def translate_opus_with_sentence_split(text: str) -> str:
+    sentences = sent_tokenize(text, language='polish')
+    translations = []
+    for sent in sentences:
+        result = opus_model(sent)[0]['translation_text']
+        translations.append(result)
+    return " ".join(translations)
+
 @app.post("/translate")
 def translate(request: TranslateRequest):
     text = request.text
     model = request.model.lower()
 
     if model == "opus":
-        result = opus_model(text)[0]["translation_text"]
+        result = translate_opus_with_sentence_split(text)
     elif model == "mbart":
         result = translate_mbart(text)
     else:
