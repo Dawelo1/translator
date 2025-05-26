@@ -28,12 +28,8 @@ if st.button("Przetłumacz"):
             try:
                 api_model = model_map.get(model_label)
                 payload = {"text": text, "model": api_model}
-
-                print(f"[DEBUG] Wysyłam zapytanie: {payload}")
+                
                 response = requests.post("http://localhost:8000/translate", json=payload)
-
-                print(f"[DEBUG] Status code: {response.status_code}")
-                print(f"[DEBUG] Response JSON: {response.text}")
 
                 if response.status_code == 200:
                     translated = response.json().get("translated_text", "")
