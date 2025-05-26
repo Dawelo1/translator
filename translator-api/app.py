@@ -4,27 +4,18 @@ import requests
 st.set_page_config(page_title="Translator GUI", page_icon="🌍")
 
 st.title("🌍 Translator GUI")
-st.markdown("Wprowadź tekst, wybierz model i kierunek tłumaczenia.")
+st.markdown("Wprowadź tekst i wybierz model do tłumaczenia.")
 
-# Wprowadzenie tekstu
+# Formularz użytkownika
 text = st.text_area("Tekst do przetłumaczenia", height=150)
 
-# Wybór modelu
-model_label = st.radio("Model tłumaczenia", ["Opus-MT", "mBART-50"])
+# Użycie radio do wyboru modelu
+model_label = st.radio("Wybierz model tłumaczenia", ["Opus-MT", "mBART-50"])
 
-# Wybór kierunku
-direction = st.radio("Kierunek tłumaczenia", ["Polski ➜ Angielski", "Angielski ➜ Polski"])
-
-# Mapa modelu GUI → API
+# Mapa nazw GUI -> API
 model_map = {
     "Opus-MT": "opus",
     "mBART-50": "mbart"
-}
-
-# Mapa kierunku GUI → języki
-lang_map = {
-    "Polski ➜ Angielski": ("pl", "en"),
-    "Angielski ➜ Polski": ("en", "pl")
 }
 
 translated = None
@@ -35,15 +26,8 @@ if st.button("Przetłumacz"):
     else:
         with st.spinner("Tłumaczenie..."):
             try:
-                api_model = model_map[model_label]
-                src_lang, tgt_lang = lang_map[direction]
-
-                payload = {
-                    "text": text,
-                    "model": api_model,
-                    "source_lang": src_lang,
-                    "target_lang": tgt_lang
-                }
+                api_model = model_map.get(model_label)
+                payload = {"text": text, "model": api_model}
 
                 print(f"[DEBUG] Wysyłam zapytanie: {payload}")
                 response = requests.post("http://localhost:8000/translate", json=payload)
@@ -60,7 +44,7 @@ if st.button("Przetłumacz"):
                 st.error(f"Błąd połączenia: {e}")
                 print(f"[DEBUG] Request error: {e}")
 
-# Wyświetlenie tłumaczenia
+# Wyświetlanie przetłumaczonego tekstu
 if translated:
     st.success("Przetłumaczony tekst:")
     st.code(translated, language="text")

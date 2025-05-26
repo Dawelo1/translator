@@ -27,8 +27,6 @@ def translate_mbart(text: str) -> str:
 
 @app.post("/translate")
 def translate(request: TranslateRequest):
-    source_lang = request.source_lang or "pl"
-    target_lang = request.target_lang or "en"
     text = request.text
     model = request.model.lower()
 
