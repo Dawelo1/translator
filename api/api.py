@@ -34,4 +34,4 @@ def translate(request: TranslateRequest):
 
 @app.get("/", include_in_schema=False)
 def root():
-    return {"message": "Translator API. Use POST /translate with model='opus' or 'mbart'."}
+    return RedirectResponse(url="/docs")
