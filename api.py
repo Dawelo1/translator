@@ -38,7 +38,11 @@ def translate_opus_with_sentence_split(text: str) -> str:
         translations.append(result)
     return " ".join(translations)
 
-@app.post("/translate")
+@app.post(
+    "/translate",
+    summary="Tłumaczenie tekstu PL->EN",
+    description="Przetłumacz tekst z języka polskiego na angielski. Wybierz model: 'opus' (MarianMT) lub 'mbart' (mBART)."
+)
 def translate(request: TranslateRequest):
     text = request.text
     model = request.model.lower()
@@ -52,6 +56,6 @@ def translate(request: TranslateRequest):
 
     return {"translated_text": result}
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def root():
     return {"message": "Translator API. Use POST /translate with model='opus' or 'mbart'."}
