@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+transformers
+torch
+sentencepiece
+protobuf
+sacremoses
+nltk
+datasets
+sacrebleu
+evaluate
