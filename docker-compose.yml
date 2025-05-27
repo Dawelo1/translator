@@ -1,16 +1,25 @@
 services:
-  backend:
+  api:
     build:
       context: .
-      dockerfile: ./api/Dockerfile
+      dockerfile: Dockerfile
+    container_name: translator_api
     ports:
       - "8000:8000"
     environment:
-      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    restart: unless-stopped
 
   frontend:
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: translator_frontend
     ports:
       - "8501:8501"
+    environment:
+      - API_URL=http://api:8000   # Odwołanie do usługi api przez docker network
+      - STREAMLIT_TELEMETRY_DISABLED=true
+    depends_on:
+      - api
+    restart: unless-stopped

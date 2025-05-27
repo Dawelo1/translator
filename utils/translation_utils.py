@@ -5,6 +5,7 @@ import nltk
 import evaluate  # <-- zamiast datasets.load_metric
 
 nltk.download('punkt')
+nltk.download('punkt_tab')
 
 # Inicjalizacja modeli
 def init_models():
