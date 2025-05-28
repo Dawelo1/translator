@@ -12,14 +12,21 @@ st.markdown("Wprowadź tekst i wybierz model do tłumaczenia albo przetestuj oba
 
 mode = st.radio("Tryb działania", ["Tłumaczenie", "Test"])
 
+model_map = {
+    "Opus-MT": "opus",
+    "mBART-50": "mbart"
+}
+
+def display_result(title, text, elapsed_time):
+    st.subheader(title)
+    st.code(text, language=None)
+    if elapsed_time is not None:
+        st.caption(f"Czas tłumaczenia: {elapsed_time:.2f} sekundy")
+
 if mode == "Tłumaczenie":
     text = st.text_area("Tekst do przetłumaczenia", height=300)
 
     model_label = st.radio("Wybierz model tłumaczenia", ["Opus-MT", "mBART-50", "Oba modele"])
-    model_map = {
-        "Opus-MT": "opus",
-        "mBART-50": "mbart"
-    }
 
     if st.button("Przetłumacz"):
         if not text.strip():
@@ -28,29 +35,45 @@ if mode == "Tłumaczenie":
             with st.spinner("Tłumaczenie..."):
                 try:
                     if model_label == "Oba modele":
+                        start_opus = time.perf_counter()
                         response_opus = requests.post(f"{API_URL}/translate", json={"text": text, "model": "opus"})
+                        end_opus = time.perf_counter()
+                        time_opus = end_opus - start_opus
+
+                        start_mbart = time.perf_counter()
                         response_mbart = requests.post(f"{API_URL}/translate", json={"text": text, "model": "mbart"})
+                        end_mbart = time.perf_counter()
+                        time_mbart = end_mbart - start_mbart
 
                         if response_opus.status_code == 200 and response_mbart.status_code == 200:
-                            st.subheader("Opus-MT")
-                            st.code(response_opus.json().get("translated_text", ""))
-                            st.subheader("mBART-50")
-                            st.code(response_mbart.json().get("translated_text", ""))
+                            translated_opus = response_opus.json().get("translated_text", "")
+                            translated_mbart = response_mbart.json().get("translated_text", "")
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                display_result("Opus-MT", translated_opus, time_opus)
+                            with col2:
+                                display_result("mBART-50", translated_mbart, time_mbart)
                         else:
-                            st.error("Błąd tłumaczenia.")
+                            st.error("Błąd podczas tłumaczenia jednym lub dwoma modelami.")
                     else:
-                        model_api = model_map[model_label]
-                        response = requests.post(f"{API_URL}/translate", json={"text": text, "model": model_api})
+                        api_model = model_map.get(model_label)
+                        start = time.perf_counter()
+                        response = requests.post(f"{API_URL}/translate", json={"text": text, "model": api_model})
+                        end = time.perf_counter()
+                        elapsed = end - start
+
                         if response.status_code == 200:
-                            st.subheader(model_label)
-                            st.code(response.json().get("translated_text", ""))
+                            translated_text = response.json().get("translated_text", "")
+                            display_result(model_label, translated_text, elapsed)
                         else:
                             st.error(f"Błąd API: {response.status_code}")
-                except Exception as e:
+
+                except requests.exceptions.RequestException as e:
                     st.error(f"Błąd połączenia: {e}")
 
 elif mode == "Test":
-    test_data_raw = st.text_area("Dane testowe (każdy wiersz: PL = EN)", height=300)
+    st.markdown("**Format danych testowych:** każdy wiersz w formacie `PL = EN` (np. `To jest test = This is a test`).")
+    test_data_raw = st.text_area("Dane testowe", height=300, placeholder="Przykład:\nTo jest test = This is a test")
 
     if st.button("Przetestuj modele"):
         if not test_data_raw.strip():
