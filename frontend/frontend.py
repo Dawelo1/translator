@@ -8,83 +8,93 @@ API_URL = os.getenv("API_URL", "http://localhost:8000")
 st.set_page_config(page_title="Translator GUI", page_icon="🌍", layout="wide")
 
 st.title("🌍 Translator GUI")
-st.markdown("Wprowadź tekst i wybierz model do tłumaczenia.")
+st.markdown("Wprowadź tekst i wybierz model do tłumaczenia albo przetestuj oba modele na wielu przykładach.")
 
-# Formularz użytkownika z wyższym polem tekstowym
-text = st.text_area("Tekst do przetłumaczenia", height=300)
+mode = st.radio("Tryb działania", ["Tłumaczenie", "Test"])
 
-# Wybór modelu (dodana opcja obu modeli)
-model_label = st.radio("Wybierz model tłumaczenia", ["Opus-MT", "mBART-50", "Oba modele"])
+if mode == "Tłumaczenie":
+    text = st.text_area("Tekst do przetłumaczenia", height=300)
 
-# Mapa nazw GUI -> API
-model_map = {
-    "Opus-MT": "opus",
-    "mBART-50": "mbart"
-}
+    model_label = st.radio("Wybierz model tłumaczenia", ["Opus-MT", "mBART-50", "Oba modele"])
+    model_map = {
+        "Opus-MT": "opus",
+        "mBART-50": "mbart"
+    }
 
-translated_opus = None
-translated_mbart = None
-time_opus = None
-time_mbart = None
-error_msg = None
+    if st.button("Przetłumacz"):
+        if not text.strip():
+            st.warning("Proszę wprowadzić tekst.")
+        else:
+            with st.spinner("Tłumaczenie..."):
+                try:
+                    if model_label == "Oba modele":
+                        response_opus = requests.post(f"{API_URL}/translate", json={"text": text, "model": "opus"})
+                        response_mbart = requests.post(f"{API_URL}/translate", json={"text": text, "model": "mbart"})
 
-if st.button("Przetłumacz"):
-    if not text.strip():
-        st.warning("Proszę wprowadzić tekst.")
-    else:
-        with st.spinner("Tłumaczenie..."):
-            try:
-                if model_label == "Oba modele":
-                    start = time.perf_counter()
-                    response_opus = requests.post(f"{API_URL}/translate", json={"text": text, "model": "opus"})
-                    time_opus = time.perf_counter() - start
-
-                    start = time.perf_counter()
-                    response_mbart = requests.post(f"{API_URL}/translate", json={"text": text, "model": "mbart"})
-                    time_mbart = time.perf_counter() - start
-
-                    if response_opus.status_code == 200 and response_mbart.status_code == 200:
-                        translated_opus = response_opus.json().get("translated_text", "")
-                        translated_mbart = response_mbart.json().get("translated_text", "")
-                    else:
-                        error_msg = "Błąd podczas tłumaczenia jednym lub dwoma modelami."
-                else:
-                    api_model = model_map.get(model_label)
-                    start = time.perf_counter()
-                    response = requests.post(f"{API_URL}/translate", json={"text": text, "model": api_model})
-                    elapsed = time.perf_counter() - start
-
-                    if response.status_code == 200:
-                        if api_model == "opus":
-                            translated_opus = response.json().get("translated_text", "")
-                            time_opus = elapsed
+                        if response_opus.status_code == 200 and response_mbart.status_code == 200:
+                            st.subheader("Opus-MT")
+                            st.code(response_opus.json().get("translated_text", ""))
+                            st.subheader("mBART-50")
+                            st.code(response_mbart.json().get("translated_text", ""))
                         else:
-                            translated_mbart = response.json().get("translated_text", "")
-                            time_mbart = elapsed
+                            st.error("Błąd tłumaczenia.")
                     else:
-                        error_msg = f"Błąd API: {response.status_code}"
+                        model_api = model_map[model_label]
+                        response = requests.post(f"{API_URL}/translate", json={"text": text, "model": model_api})
+                        if response.status_code == 200:
+                            st.subheader(model_label)
+                            st.code(response.json().get("translated_text", ""))
+                        else:
+                            st.error(f"Błąd API: {response.status_code}")
+                except Exception as e:
+                    st.error(f"Błąd połączenia: {e}")
 
-            except requests.exceptions.RequestException as e:
-                error_msg = f"Błąd połączenia: {e}"
-                print(f"[DEBUG] Request error: {e}")
+elif mode == "Test":
+    test_data_raw = st.text_area("Dane testowe (każdy wiersz: PL = EN)", height=300)
 
-if error_msg:
-    st.error(error_msg)
+    if st.button("Przetestuj modele"):
+        if not test_data_raw.strip():
+            st.warning("Wprowadź dane testowe.")
+        else:
+            try:
+                # Parsowanie danych do formatu JSON
+                examples = []
+                for line in test_data_raw.strip().splitlines():
+                    if "=" not in line:
+                        continue
+                    parts = line.split("=", maxsplit=1)
+                    pl = parts[0].strip()
+                    en = parts[1].strip()
+                    if pl and en:
+                        examples.append({"pl": pl, "en": en})
 
-def display_result(title, text, elapsed_time):
-    st.subheader(title)
-    st.code(text, language=None)
-    if elapsed_time is not None:
-        st.caption(f"Czas tłumaczenia: {elapsed_time:.2f} sek")
+                if not examples:
+                    st.warning("Nie znaleziono poprawnych danych wejściowych.")
+                else:
+                    with st.spinner("Ładowanie danych i ewaluacja modeli..."):
+                        r1 = requests.post(f"{API_URL}/load-test-data", json=examples)
+                        if r1.status_code != 200:
+                            st.error("Błąd ładowania danych testowych.")
+                        else:
+                            r2 = requests.get(f"{API_URL}/evaluate")
+                            if r2.status_code == 200:
+                                result = r2.json()
+                                bleu = result.get("bleu_scores", {})
+                                trans = result.get("translations", [])
 
-if model_label == "Oba modele" and translated_opus and translated_mbart:
-    col1, col2 = st.columns(2)
-    with col1:
-        display_result("Opus-MT", translated_opus, time_opus)
-    with col2:
-        display_result("mBART-50", translated_mbart, time_mbart)
-else:
-    if translated_opus:
-        display_result("Opus-MT", translated_opus, time_opus)
-    if translated_mbart:
-        display_result("mBART-50", translated_mbart, time_mbart)
+                                st.success("Ewaluacja zakończona.")
+                                st.metric("BLEU Opus-MT", bleu.get("opus", 0))
+                                st.metric("BLEU mBART-50", bleu.get("mbart", 0))
+
+                                st.divider()
+                                for i, item in enumerate(trans, 1):
+                                    st.markdown(f"### Przykład {i}")
+                                    st.markdown(f"- **PL:** {item['source_pl']}")
+                                    st.markdown(f"- **EN (referencja):** {item['reference_en']}")
+                                    st.markdown(f"- **Opus-MT:** `{item['opus_mt']}`")
+                                    st.markdown(f"- **mBART-50:** `{item['mbart']}`")
+                                    st.divider()
+                            else:
+                                st.error("Błąd podczas ewaluacji.")
+            except Exception as e:
+                st.error(f"Błąd testowania: {e}")
