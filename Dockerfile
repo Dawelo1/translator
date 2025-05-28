@@ -5,6 +5,7 @@ WORKDIR /app
 # Skopiuj wszystkie potrzebne katalogi
 COPY ./api /app/api
 COPY ./utils /app/utils
+COPY ./evaluation /app/evaluation
 
 # Ustaw PYTHONPATH, żeby można było importować utils.*
 ENV PYTHONPATH="${PYTHONPATH}:/app"
