@@ -247,6 +247,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    2. Wprowadzenie
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -258,6 +271,61 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cel-projektu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cel projektu
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modele-tumaczeniowe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modele tłumaczeniowe
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architektura-i-funkcjonalnosci" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architektura i funkcjonalności
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wykorzystane-biblioteki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wykorzystane biblioteki
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -393,6 +461,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cel-projektu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cel projektu
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modele-tumaczeniowe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modele tłumaczeniowe
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architektura-i-funkcjonalnosci" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architektura i funkcjonalności
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wykorzystane-biblioteki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wykorzystane biblioteki
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -408,11 +520,54 @@
 
 
 <h1 id="2-wprowadzenie">2. Wprowadzenie</h1>
-<p>W ostatnich latach narzędzia do tłumaczenia maszynowego oparte na sieciach neuronowych znacząco poprawiły jakość translacji tekstów. Projekt Translator powstał jako lokalne rozwiązanie umożliwiające tłumaczenie offline z wykorzystaniem otwartych modeli językowych, bez konieczności korzystania z usług komercyjnych takich jak Google Translate.</p>
-<p>Główne cele projektu:
-- stworzenie prostego API do tłumaczeń,
-- umożliwienie korzystania z GUI,
-- przetestowanie wydajności modelu OpenNMT.</p>
+<p>W ostatnich latach narzędzia do tłumaczenia maszynowego oparte na głębokich sieciach neuronowych znacząco poprawiły jakość automatycznej translacji tekstów. Projekt <strong>Translator</strong> powstał jako próba stworzenia samodzielnej aplikacji umożliwiającej tłumaczenie offline z języka <strong>polskiego na angielski</strong>, bez potrzeby korzystania z komercyjnych usług chmurowych takich jak Google Translate.</p>
+<h2 id="cel-projektu">Cel projektu</h2>
+<p>Główne cele projektu to:</p>
+<ul>
+<li>stworzenie aplikacji tłumaczącej z <strong>polskiego na angielski</strong> (jednokierunkowo),</li>
+<li>porównanie działania dwóch gotowych modeli tłumaczeniowych typu encoder-decoder:</li>
+<li><code>Helsinki-NLP/opus-mt-pl-en</code>,</li>
+<li><code>facebook/mbart-large-50-many-to-many-mmt</code>,</li>
+<li>zapewnienie prostego <strong>API</strong> oraz graficznego interfejsu <strong>GUI (Streamlit)</strong> do wykonywania tłumaczeń,</li>
+<li>wdrożenie aplikacji jako usługi chmurowej w <strong>Microsoft Azure</strong> (z wykorzystaniem kontenerów Docker).</li>
+</ul>
+<p>Lokalne uruchomienie aplikacji służy głównie jako środowisko testowe i deweloperskie. Finalnym celem projektu jest udostępnienie systemu jako usługi webowej dla użytkowników zewnętrznych.</p>
+<hr />
+<h2 id="modele-tumaczeniowe">Modele tłumaczeniowe</h2>
+<p>Projekt wykorzystuje dwa różne podejścia do tłumaczenia:</p>
+<ol>
+<li><strong>Opus-MT (<code>opus-mt-pl-en</code>)</strong> — lekki, szybki model oparty na architekturze MarianMT, przeznaczony do prostych zastosowań produkcyjnych.</li>
+<li><strong>MBart-50 (<code>mbart-large-50-many-to-many-mmt</code>)</strong> — większy, bardziej złożony model przystosowany do wielu języków, z lepszym rozumieniem kontekstu i większą dokładnością.</li>
+</ol>
+<p>Oba modele są pretrenowane i dostępne za darmo poprzez platformę Hugging Face.</p>
+<hr />
+<h2 id="architektura-i-funkcjonalnosci">Architektura i funkcjonalności</h2>
+<p>Główne komponenty implementacyjne:</p>
+<ul>
+<li>
+<p><strong>Inicjalizacja modeli</strong>:
+  Modele są ładowane z Hugging Face i przygotowywane do działania na GPU (jeśli dostępny) lub CPU. W przypadku <code>mbart-50</code> dodatkowo inicjalizowany jest tokenizer z ustawionym językiem źródłowym jako <code>pl_PL</code>.</p>
+</li>
+<li>
+<p><strong>Tłumaczenie tekstu</strong>:
+  Tekst wejściowy dzielony jest na zdania za pomocą NLTK (<code>sent_tokenize</code>) i tłumaczony sekwencyjnie. Dla <code>opus-mt</code> każde zdanie jest tłumaczone niezależnie, natomiast <code>mbart-50</code> generuje tłumaczenie dla całego bloku tekstu.</p>
+</li>
+<li>
+<p><strong>Ewaluacja BLEU</strong>:
+  Funkcja <code>evaluate_models_on_dataset()</code> wykorzystuje bibliotekę <code>evaluate</code> i metrykę <strong>sacreBLEU</strong>, aby ocenić jakość tłumaczeń w odniesieniu do zestawu referencyjnych tłumaczeń. Oba modele są testowane na tych samych danych wejściowych i wynik porównywany.</p>
+</li>
+</ul>
+<hr />
+<h2 id="wykorzystane-biblioteki">Wykorzystane biblioteki</h2>
+<ul>
+<li><code>transformers</code> – obsługa modeli <code>opus-mt</code> i <code>mbart-50</code>,</li>
+<li><code>nltk</code> – tokenizacja zdań,</li>
+<li><code>evaluate</code> – ewaluacja jakości tłumaczeń za pomocą metryk (BLEU),</li>
+<li><code>torch</code> – obsługa GPU/CPU i działania modeli PyTorch,</li>
+<li><code>pipeline</code> – uproszczone API dla translacji.</li>
+</ul>
+<hr />
+<p>W kolejnych sekcjach znajdziesz szczegółowy opis danych, metody uruchamiania aplikacji, proces wdrożenia oraz wyniki porównania jakości tłumaczeń.</p>
 
 
 

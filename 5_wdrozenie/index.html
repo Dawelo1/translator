@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#5-opis-wdrozenia" class="md-skip">
+        <a href="#cykl-wdrazania-aplikacji-z-wykorzystaniem-obrazow-dockerowych-na-platformie-microsoft-azure" class="md-skip">
           Skip to content
         </a>
       
@@ -313,6 +313,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    5. Wdrożenie
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -324,6 +337,79 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-przygotowanie-srodowiska-aplikacji" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Przygotowanie środowiska aplikacji
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-przechowywanie-obrazow-kontenerowych" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Przechowywanie obrazów kontenerowych
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-konfiguracja-usugi-azure-web-app-for-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Konfiguracja usługi Azure Web App for Containers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-konfiguracja-srodowiska-aplikacji" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Konfiguracja środowiska aplikacji
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-udostepnienie-aplikacji-uzytkownikom" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Udostępnienie aplikacji użytkownikom
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-problemy-wynikajace-z-subskrypcji-na-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Problemy wynikające z subskrypcji na Azure
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -393,6 +479,68 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-przygotowanie-srodowiska-aplikacji" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Przygotowanie środowiska aplikacji
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-przechowywanie-obrazow-kontenerowych" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Przechowywanie obrazów kontenerowych
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-konfiguracja-usugi-azure-web-app-for-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Konfiguracja usługi Azure Web App for Containers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-konfiguracja-srodowiska-aplikacji" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Konfiguracja środowiska aplikacji
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-udostepnienie-aplikacji-uzytkownikom" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Udostępnienie aplikacji użytkownikom
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-problemy-wynikajace-z-subskrypcji-na-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Problemy wynikające z subskrypcji na Azure
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -407,8 +555,53 @@
 
 
 
-<h1 id="5-opis-wdrozenia">5. Opis wdrożenia</h1>
-<p><em>(Sekcja do uzupełnienia)</em></p>
+<h1 id="cykl-wdrazania-aplikacji-z-wykorzystaniem-obrazow-dockerowych-na-platformie-microsoft-azure">Cykl wdrażania aplikacji z wykorzystaniem obrazów Dockerowych na platformie Microsoft Azure</h1>
+<hr />
+<h2 id="1-przygotowanie-srodowiska-aplikacji"><strong>1. Przygotowanie środowiska aplikacji</strong></h2>
+<p>Proces wdrażania rozpoczyna się od przygotowania dwóch części aplikacji:</p>
+<ul>
+<li><strong>Backend (API)</strong> — odpowiedzialny za logikę, obsługę żądań użytkowników i testy.  </li>
+<li><strong>Frontend (interfejs użytkownika)</strong> — odpowiadający za wyświetlanie treści i interakcje użytkownika.</li>
+</ul>
+<p>Dla obu części tworzy się osobne obrazy Docker, które zawierają wszystkie niezbędne zależności i konfigurację. Dzięki temu uzyskujemy przenośne środowisko uruchomieniowe niezależne od systemu operacyjnego. Obrazy są następnie wypychane do Docker Hub.</p>
+<hr />
+<h2 id="2-przechowywanie-obrazow-kontenerowych"><strong>2. Przechowywanie obrazów kontenerowych</strong></h2>
+<p>Obrazy Dockerowe są przechowywane w <strong>Docker Hub</strong> — publicznym lub prywatnym rejestrze kontenerów. Docker Hub umożliwia łatwe udostępnianie i wersjonowanie obrazów.</p>
+<p>Po ich przygotowaniu lokalnie, przesyła się je do Docker Hub, skąd są pobierane przez usługi w chmurze Microsoft Azure, takie jak <strong>Azure Web App for Containers</strong>, umożliwiające bezpośrednie wdrażanie aplikacji z użyciem wskazanych obrazów.</p>
+<hr />
+<h2 id="3-konfiguracja-usugi-azure-web-app-for-containers"><strong>3. Konfiguracja usługi Azure Web App for Containers</strong></h2>
+<p>Do uruchomienia aplikacji bez zarządzania infrastrukturą służy <strong>Azure Web App for Containers</strong>. Tworzone są dwa niezależne Web Appy:</p>
+<ul>
+<li><strong>Web App dla API</strong> — obsługuje logikę aplikacji oraz żądania HTTP/HTTPS.</li>
+<li><strong>Web App dla frontendu</strong> — serwuje interfejs użytkownika jako aplikację webową.</li>
+</ul>
+<p>Podczas konfiguracji wskazuje się nazwę obrazu i jego wersję (tag) z Docker Huba. Obie aplikacje są publicznie dostępne, co upraszcza konfigurację i minimalizuje zużycie zasobów.</p>
+<hr />
+<h2 id="4-konfiguracja-srodowiska-aplikacji"><strong>4. Konfiguracja środowiska aplikacji</strong></h2>
+<p>Ustawiane są zmienne środowiskowe, które umożliwiają poprawne działanie aplikacji, m.in.:</p>
+<ul>
+<li>adresy URL do usług (np. baza danych),</li>
+<li>klucze API,</li>
+<li>ścieżki dostępu.</li>
+</ul>
+<p>Pozwala to zarządzać konfiguracją bez ingerencji w kod źródłowy.</p>
+<hr />
+<h2 id="5-udostepnienie-aplikacji-uzytkownikom"><strong>5. Udostępnienie aplikacji użytkownikom</strong></h2>
+<p>Po wdrożeniu aplikacja staje się dostępna pod publicznymi adresami URL. Azure umożliwia również:</p>
+<ul>
+<li>przypisanie własnej domeny,</li>
+<li>aktywację certyfikatów SSL (HTTPS).</li>
+</ul>
+<p>W projekcie nie zastosowano tej opcji z uwagi na ograniczenia subskrypcji.</p>
+<hr />
+<h2 id="6-problemy-wynikajace-z-subskrypcji-na-azure"><strong>6. Problemy wynikające z subskrypcji na Azure</strong></h2>
+<p>W związku z ograniczoną subskrypcją <strong>Azure for Students</strong>, aplikacja nie może być uruchomiona na stałe.</p>
+<ul>
+<li>Obraz API waży około <strong>6 GB</strong>, ze względu na wbudowane modele językowe.</li>
+<li>Po godzinie bezczynności aplikacje są automatycznie zatrzymywane.</li>
+<li>Uruchomienie back-endu trwa długo, co wpływa na wygodę użytkowania.</li>
+</ul>
+<hr />
 
 
 
