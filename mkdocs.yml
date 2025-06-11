@@ -1,0 +1,18 @@
+site_name: Translator Documentation
+theme:
+  name: material
+
+nav:
+  - Strona główna: index.md
+  - 1. Streszczenie: 1_streszczenie.md
+  - 2. Wprowadzenie: 2_wprowadzenie.md
+  - 3. Przegląd literatury: 3_literatura.md
+  - 4. Opis danych: 4_dane.md
+  - 5. Wdrożenie: 5_wdrozenie.md
+  - 6. Wyniki: 6_wyniki.md
+  - 7. Wnioski: 7_wnioski.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Dawelo1/translator
