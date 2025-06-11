@@ -23,3 +23,8 @@ Dlatego tekst jest dzielony na pojedyncze zdania i tłumaczony osobno, co może 
 
 Model **mBART-50** radzi sobie lepiej z dłuższymi fragmentami, zachowując kontekst.
 
+
+
+## Dokumentacja
+
+https://Dawelo1.github.io/translator/
