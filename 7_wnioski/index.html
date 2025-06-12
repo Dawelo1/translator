@@ -406,12 +406,26 @@
 
 
 <h1 id="7-wnioski">7. Wnioski</h1>
-<p>Projekt Translator pokazuje, że tłumaczenia maszynowe mogą być skutecznie realizowane lokalnie, bez konieczności korzystania z chmury. </p>
-<p>Wnioski:
-- narzędzie działa szybko i jest elastyczne,
-- jakość tłumaczenia zależy od wybranego modelu i danych treningowych,
-- dalszy rozwój może objąć UI, wsparcie wielu języków, logowanie tłumaczeń.</p>
-<p>Możliwość rozbudowy czyni projekt atrakcyjnym zarówno edukacyjnie, jak i praktycznie.</p>
+<p>Projekt <strong>Translator</strong> potwierdza, że tłumaczenie tekstów z języka polskiego na angielski może być skutecznie realizowane lokalnie przy użyciu gotowych modeli neuronowych, bez potrzeby korzystania z komercyjnych usług chmurowych.</p>
+<p><strong>Najważniejsze wnioski:</strong>
+- Aplikacja działa stabilnie i wydajnie, a dzięki konteneryzacji z użyciem Dockera możliwe jest szybkie uruchomienie zarówno lokalnie, jak i w chmurze (np. Microsoft Azure).
+- Zastosowano dwa gotowe, otwarte modele tłumaczeniowe:
+  - <strong>Opus-MT</strong> (<code>Helsinki-NLP/opus-mt-pl-en</code>) — lekki i szybki model, bardzo dobrze radzi sobie z prostymi, technicznymi tekstami. Idealny do zastosowań w środowiskach o ograniczonych zasobach.
+  - <strong>mBART-50</strong> (<code>facebook/mbart-large-50-many-to-many-mmt</code>) — większy i bardziej zaawansowany model, oparty na architekturze seq2seq z pretreningiem. Zdecydowanie lepiej radzi sobie z kontekstem, niuansami językowymi i bardziej naturalnym stylem tłumaczenia, kosztem większego zapotrzebowania na zasoby obliczeniowe.</p>
+<ul>
+<li>W bezpośrednim porównaniu:  </li>
+<li><strong>Opus-MT</strong> oferuje szybsze odpowiedzi i mniejsze zużycie pamięci.  </li>
+<li>
+<p><strong>mBART-50</strong> generuje bardziej naturalne i płynne tłumaczenia, szczególnie przy dłuższych i bardziej złożonych tekstach.</p>
+</li>
+<li>
+<p>Możliwości dalszego rozwoju obejmują:  </p>
+</li>
+<li>dodanie opcji logowania i oceny wyników,</li>
+<li>rozbudowę interfejsu graficznego,</li>
+<li>integrację z bazami danych lub platformami edukacyjnymi.</li>
+</ul>
+<p>Projekt ma wartość edukacyjną oraz potencjał do praktycznego wykorzystania jako lekkie narzędzie do lokalnego tłumaczenia tekstów specjalistycznych lub prywatnych.</p>
 
 
 

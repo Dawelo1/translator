@@ -408,12 +408,13 @@
 
 
 <h1 id="4-opis-danych">4. Opis danych</h1>
-<p>Dane wejściowe:
-- pojedyncze zdania tekstowe w języku polskim
-- pliki tekstowe</p>
-<p>Dane wyjściowe:
-- tłumaczenia na wskazany język docelowy</p>
-<p>Modele trenowane były na danych Europarl i Tatoeba, dostępnych w ramach projektu <code>opus-mt</code>.</p>
+<p><strong>Dane wejściowe:</strong>
+- Tekst w języku polskim (mogą to być pojedyncze zdania lub dłuższe fragmenty).
+- Możliwość wczytania plików tekstowych do przetwarzania.</p>
+<p><strong>Dane wyjściowe:</strong>
+- Tłumaczenia wyłącznie na język angielski.</p>
+<p>W projekcie wykorzystujemy dwa gotowe, wytrenowane wcześniej modele tłumaczeniowe: <code>mbart-50</code> i <code>opus-mt</code>. Modele te zostały opracowane odpowiednio przez Facebook AI (obecnie Meta AI) oraz zespół Helsinki-NLP i były trenowane na dużych, wielojęzycznych korpusach takich jak <strong>Europarl</strong> i <strong>Tatoeba</strong>.</p>
+<p>Porównujemy jakości tłumaczeń generowanych przez te modele na wspólnym zbiorze danych wejściowych.</p>
 
 
 
