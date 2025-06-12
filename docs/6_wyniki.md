@@ -11,4 +11,4 @@
 
 ### Przykłady
 
-![Przyklady](screenshots/przyklady.png)
+![Przyklady](screenshots/przyklady.PNG)
