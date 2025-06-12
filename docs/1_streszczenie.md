@@ -1,5 +1,5 @@
 # 1. Streszczenie
 
-Projekt Translator to aplikacja służąca do tłumaczenia tekstów z języka polskiego na inne języki przy użyciu modeli neuronowych. Składa się z komponentów API i GUI oraz wykorzystuje model OpenNMT i bibliotekę `transformers`.
+**Translator** to aplikacja do tłumaczenia tekstów z języka polskiego na angielski z wykorzystaniem modeli neuronowych. Składa się z backendu (API) oraz frontendowego interfejsu (GUI). W projekcie zastosowano modele `mbart-50` oraz `opus-mt` z biblioteki `transformers`.
 
-Projekt ma na celu stworzenie prostego, ale elastycznego narzędzia tłumaczeniowego dostępnego lokalnie lub przez przeglądarkę.
+Celem jest stworzenie prostego i funkcjonalnego narzędzia tłumaczeniowego, dostępnego lokalnie lub jako usługa webowa.
