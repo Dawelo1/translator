@@ -408,19 +408,42 @@
 
 
 <h1 id="3-przeglad-literatury">3. Przegląd literatury</h1>
-<p>Projekt oparty jest na modelu tłumaczeniowym OpenNMT i korzysta z gotowych modeli dostępnych przez Hugging Face.</p>
-<p>Źródła:</p>
+<p>Projekt Translator bazuje na najnowszych osiągnięciach w dziedzinie tłumaczenia maszynowego (Machine Translation, MT), w szczególności tłumaczenia neuronowego (Neural Machine Translation, NMT). Wykorzystuje gotowe modele udostępnione przez społeczność open-source za pośrednictwem platformy Hugging Face oraz implementacje sieci neuronowych w PyTorch.</p>
+<p><strong>Główne źródła teoretyczne i narzędziowe:</strong></p>
 <ul>
 <li>
-<p>Klein et al. (2017), “OpenNMT: Open-Source Toolkit for Neural Machine Translation”</p>
+<p><strong>Klein et al. (2017), “OpenNMT: Open-Source Toolkit for Neural Machine Translation”</strong><br />
+  → Artykuł opisuje architekturę OpenNMT, jednego z pierwszych otwartych frameworków do tłumaczenia neuronowego. OpenNMT umożliwia budowanie modeli typu encoder-decoder, obsługujących tłumaczenie sekwencji na sekwencję, często wykorzystywane w zadaniach NMT.</p>
 </li>
 <li>
-<p>https://huggingface.co/Helsinki-NLP/opus-mt</p>
+<p><strong>Hugging Face – Transformers i modele tłumaczeniowe</strong><br />
+  → Projekt korzysta z gotowych modeli udostępnionych przez społeczność:  </p>
+</li>
+<li><a href="https://huggingface.co/Helsinki-NLP/opus-mt-pl-en"><code>Helsinki-NLP/opus-mt-pl-en</code></a> — model tłumaczenia PL→EN oparty na MarianMT, wytrenowany na zbiorach Europarl, Tatoeba i innych korpusach z projektu OPUS.  </li>
+<li>
+<p><a href="https://huggingface.co/facebook/mbart-large-50-many-to-many-mmt"><code>facebook/mbart-large-50-many-to-many-mmt</code></a> — wielojęzyczny model seq2seq MBART-50 obsługujący 50 języków i wspierający tłumaczenia w różnych kierunkach.</p>
 </li>
 <li>
-<p>Dokumentacja PyTorch, Hugging Face Transformers</p>
+<p><strong>PyTorch</strong><br />
+  → Główna biblioteka do implementacji i uruchamiania modeli MBART. Zapewnia niskopoziomowy dostęp do GPU i kontrolę nad modelem.</p>
+</li>
+<li>
+<p><strong>Transformers (Hugging Face)</strong><br />
+  → Wysokopoziomowa biblioteka ułatwiająca pracę z nowoczesnymi modelami NLP. W projekcie wykorzystywana do ładowania modeli, tokenizacji oraz generowania tłumaczeń.</p>
+</li>
+<li>
+<p><strong>NLTK (Natural Language Toolkit)</strong><br />
+  → Biblioteka służąca do przetwarzania języka naturalnego. W projekcie używana do dzielenia tekstu na zdania przed ich tłumaczeniem.</p>
 </li>
 </ul>
+<p><strong>Dodatkowe źródła i inspiracje:</strong></p>
+<ul>
+<li>Dokumentacja Hugging Face: https://huggingface.co/docs  </li>
+<li>Dokumentacja PyTorch: https://pytorch.org/docs  </li>
+<li>Dokumentacja OpenNMT: https://opennmt.net  </li>
+<li>Dokumentacja BLEU (sacreBLEU): https://github.com/mjpost/sacrebleu  </li>
+</ul>
+<p>Projekt opiera się na podejściu porównawczym — analiza wyników tłumaczenia uzyskanych przez różne modele umożliwia lepsze zrozumienie ich zalet, ograniczeń i kontekstów użycia.</p>
 
 
 
